@@ -1,0 +1,10 @@
+[project]
+name = "ct-agent-nlp-parser-module"
+version = "0.1.0"
+description = "NLP parser for json data parsing"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+	"pydantic>=2.0",
+	"openai>=1.0"
+]
