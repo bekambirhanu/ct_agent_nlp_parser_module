@@ -1,0 +1,7 @@
+# virtual environment
+.venv/
+# Local history
+.history/
+
+# env variables
+.env
