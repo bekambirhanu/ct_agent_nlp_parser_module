@@ -1,7 +1,7 @@
-import os
 import json
-from openai import OpenAI
-from schema import TradeOrder, ParserResponse
+from openai import OpenAI, NotFoundError
+from .schema import TradeOrder, ParserResponse
+from pydantic import ValidationError
 
 
 
@@ -107,19 +107,16 @@ class TradeParser:
             order = response.choices[0].message.parsed
             return ParserResponse(success=True, order=order, raw_text=text)
         
+        except ValidationError as exc:
+            print(repr(exc.errors()[0]['type']))
+        except NotFoundError as ntf:
+            print(f"OpenAI client not found: {ntf}")
         except Exception as e:
-            return ParserResponse(success=False, error_message=str(e), raw_text=text)
+            return ParserResponse(success=False, error_message=e, raw_text=text)
 
 # Quick Test helper
 if __name__ == "__main__":
-    from dotenv import load_dotenv
-    load_dotenv()
-
     # Ensure you have OPENAI_API_KEY in your .env
-    parser = TradeParser(api_key=os.getenv("AI_STUDIO_API_KEY"), model="gemini-2.5-flash", base_url="https://generativelanguage.googleapis.com/v1beta/")
-    result = parser.parse_text("""
-                               Buy 0.5 lots of EURUSD at market
-                               SL 1.0500
-                               TP 1.1000
-                               """)
+    parser = TradeParser("AIzaSyDvYIM7vqKM86dfWzFmMKbsDmfqZsd6iBw", model="gemini-2.5-flash", base_url="https://generativelanguage.googleapis.com/v1beta/openai/")
+    result = parser.parse_text("""Buy 0.5 lots of EURUSD at market SL 1.0500 TP 1.1000""")
     print(result.model_dump_json(indent=2))
