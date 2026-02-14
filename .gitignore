@@ -7,8 +7,6 @@ __pycache__/
 # C extensions
 *.so
 
-# UV
-uv.lock
 
 # Local history
 .history/
