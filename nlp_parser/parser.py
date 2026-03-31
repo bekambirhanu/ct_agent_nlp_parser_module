@@ -27,6 +27,7 @@ class TradeParser:
             - Normalize symbols (e.g., gold → XAUUSD).
             - Normalize actions (buy/long → BUY, sell/short → SELL).
             - Interpret "now" as a MARKET order.
+            - If the user provides an incomplete trade order (e.g., misses volume or symbol), set 'success: false' in your JSON response and put a helpful question in the 'error_message' field.
             - Interpret ranges (e.g., 4327-4330) as LIMIT orders using the midpoint.
             - If multiple take-profit (TP) values exist:
               - Create a MAXIMUM of 2 orders
